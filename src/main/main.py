@@ -48,17 +48,6 @@ def main():
 
 # This function will load the users.csv file into the users table, discarding any records with incomplete data
 def load_and_clean_users(file_path):
-    """ df = pd.read_csv(file_path, sep=None, engine="python", on_bad_lines='skip')
-
-
-    df.dropna(axis=0, inplace=True)
-    df = df[df['firstName'].str.strip().astype(bool)]
-    df = df[df['lastName'].str.strip().astype(bool)]
-    df.insert(0, 'userId', range(1, len(df) + 1))
-    df = df.astype({"firstName": "str", "lastName": "str"})
-    df.to_sql("users", con=conn, if_exists="replace", index=False)
-    """
-
     data = []
 
     with open(file_path) as file_data:
@@ -103,12 +92,31 @@ def load_and_clean_users(file_path):
 
 # This function will load the callLogs.csv file into the callLogs table, discarding any records with incomplete data
 def load_and_clean_call_logs(file_path):
+    """
     df = pd.read_csv(file_path, names=["phoneNumber","startTime","endTime","direction","userId"], sep=None, engine="python", on_bad_lines="skip")
     df['endTime'] = pd.to_numeric(df['endTime'], errors='coerce')
     df.dropna(axis=0, inplace=True)
     df = df.astype({"userId": "int64", "phoneNumber": "str", "startTime": "int64", "endTime": "int64", "direction": "str"})
     df.insert(0, 'callId', range(1, len(df) + 1))
     df.to_sql("callLogs", con=conn, if_exists="replace", index=False)
+    """
+    data = []
+
+    with open(file_path) as file_data:
+        reader = csv.reader(file_data)
+        for entry in reader:
+            for item in range(len(entry)):
+                #removing ending and starting spaces
+                entry[item] = entry[item].strip()
+            data.append(entry)
+
+    # filter data
+    header = data[0].copy()
+    filtered_data = []
+    for entry in data:
+        print(entry)
+
+
     print("Call logs loaded to table")
 
 
