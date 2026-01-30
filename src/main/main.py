@@ -83,7 +83,7 @@ def load_and_clean_users(file_path):
             isNull = data[entry][item] == ""
             offColumns = len(data[entry]) != len(data[0])
             isNotAlpha = data[entry][item].isalpha()
-            if not isNull and not offColumns and not IsNotAlpha:
+            if not isNull and not offColumns and not isNotAlpha:
                 filtered_data.append(data[entry])
         
 
