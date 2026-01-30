@@ -81,8 +81,8 @@ def load_and_clean_users(file_path):
         # any entry without alpha characters only remove
         for item in range(len(data[entry])):
             isNotNull = isNotNull and (data[entry][item] != "")
-            onColumns = onColumns(len(data[entry]) == len(data[0]))
-            isAlpha = isAlpha(data[entry][item].isalpha())
+            onColumns = onColumns and (len(data[entry]) == len(data[0]))
+            isAlpha = isAlpha and (data[entry][item].isalpha())
 
         if isNotNull and onColumns and isAlpha:
             filtered_data.append(data[entry])
