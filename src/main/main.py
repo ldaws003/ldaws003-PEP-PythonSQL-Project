@@ -110,11 +110,23 @@ def load_and_clean_call_logs(file_path):
                 entry[item] = entry[item].strip()
             data.append(entry)
 
-    # filter data
-    header = data[0].copy()
+    # filter data and process data
+    data.pop(0) #removing header row
+    header = ["callId", "phoneNumber", "startTime", "endTime", "direction", "userId"]
     filtered_data = []
+    callId = 1
     for entry in data:
-        print(entry)
+        entry.insert(0, callId)
+        numCheck = re.fullmatch(r"([0-9]{3})-([0-9]{3})-([0-9]{4})", entry[0])
+        startTimeCheck = entry[1].isdigit()
+        endTimeCheck = entry[2].isdigit()
+        directionCheck = entry[3] in ["outbound", "inbound"]
+        userIdCheck = entry[4].isdigit()
+        columnsCheck = len(header) == len(entry)
+        if numCheck and startTimeCheck and endTimeCheck and directionCheck and userIdCheck and columnsCheck:
+            filtered_data.append(entry)
+            callId += 1
+    print(filtered_data)
 
 
     print("Call logs loaded to table")
