@@ -92,14 +92,6 @@ def load_and_clean_users(file_path):
 
 # This function will load the callLogs.csv file into the callLogs table, discarding any records with incomplete data
 def load_and_clean_call_logs(file_path):
-    """
-    df = pd.read_csv(file_path, names=["phoneNumber","startTime","endTime","direction","userId"], sep=None, engine="python", on_bad_lines="skip")
-    df['endTime'] = pd.to_numeric(df['endTime'], errors='coerce')
-    df.dropna(axis=0, inplace=True)
-    df = df.astype({"userId": "int64", "phoneNumber": "str", "startTime": "int64", "endTime": "int64", "direction": "str"})
-    df.insert(0, 'callId', range(1, len(df) + 1))
-    df.to_sql("callLogs", con=conn, if_exists="replace", index=False)
-    """
     data = []
 
     with open(file_path) as file_data:
@@ -138,8 +130,16 @@ def load_and_clean_call_logs(file_path):
 # You must save records consisting of each userId, avgDuration, and numCalls
 # example: 1,105.0,4 - where 1 is the userId, 105.0 is the avgDuration, and 4 is the numCalls.
 def write_user_analytics(csv_file_path):
-    df = pd.read_sql_query("SELECT userId, AVG(endTime - startTime) AS avgDuration,COUNT(*) AS numCalls FROM callLogs GROUP BY userId", conn)
-    df.to_csv(csv_file_path, index=False)
+    #df = pd.read_sql_query("SELECT userId, AVG(endTime - startTime) AS avgDuration,COUNT(*) AS numCalls FROM callLogs GROUP BY userId", conn)
+    #df.to_csv(csv_file_path, index=False)
+    cursor.execute("SELECT userId, AVG(endTime - startTime) AS avgDuration,COUNT(*) AS numCalls FROM callLogs GROUP BY userId")
+    rows = cursor.fetchall()
+    header = [description[0] for description in cursor.description]
+
+    with open(csv_file_path, mode="w") as file:
+        writer = csv.writer(file)
+        writer.writerow(header)
+        writer.writerows(rows)
 
     print("Written data to user analytics csv")
 
