@@ -73,18 +73,18 @@ def load_and_clean_users(file_path):
     filtered_data = []
 
     for entry in range(1, len(data)):
-        isNull = False
-        onColumns = False
-        isAlpha = False
+        isNotNull = True
+        onColumns = True
+        isAlpha = True
         # any null value remove
         # any entry with extra rows remove 
         # any entry without alpha characters only remove
         for item in range(len(data[entry])):
-            isNull = data[entry][item] == ""
-            onColumns = len(data[entry]) == len(data[0])
-            isAlpha = data[entry][item].isalpha()
+            isNotNull = isNotNull and (data[entry][item] != "")
+            onColumns = onColumns(len(data[entry]) == len(data[0]))
+            isAlpha = isAlpha(data[entry][item].isalpha())
 
-        if (not isNull) and onColumns and isAlpha:
+        if isNotNull and onColumns and isAlpha:
             filtered_data.append(data[entry])
         
     print("hello world")
