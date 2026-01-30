@@ -89,7 +89,7 @@ def load_and_clean_users(file_path):
         
     print("hello world")
 
-    print(filtered_data)
+    print(data)
 
 
 
