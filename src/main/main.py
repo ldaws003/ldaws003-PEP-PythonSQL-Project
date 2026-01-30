@@ -66,7 +66,7 @@ def load_and_clean_users(file_path):
         for entry in reader:
             for item in range(len(entry)):
                 #removing ending and starting spaces
-                entry[item] = entry[item].entry()
+                entry[item] = entry[item].strip()
             data.append(entry)
 
     # filter data
