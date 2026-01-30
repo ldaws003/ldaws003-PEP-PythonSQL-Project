@@ -1,5 +1,6 @@
 import csv
 import sqlite3
+import pandas as pd
 
 # Connect to the SQLite in-memory database
 conn = sqlite3.connect(':memory:')
@@ -36,7 +37,7 @@ def main():
     write_ordered_calls('../../resources/orderedCalls.csv')
 
     # Helper method that prints the contents of the users and callLogs tables. Uncomment to see data.
-    # select_from_users_and_call_logs()
+    select_from_users_and_call_logs()
 
     # Close the cursor and connection. main function ends here.
     cursor.close()
@@ -45,32 +46,47 @@ def main():
 
 # TODO: Implement the following 4 functions. The functions must pass the unit tests to complete the project.
 
-
 # This function will load the users.csv file into the users table, discarding any records with incomplete data
 def load_and_clean_users(file_path):
-
-    print("TODO: load_users")
+    df = pd.read_csv(file_path, sep=None, engine="python", on_bad_lines='skip')
+    df.dropna(axis=0, inplace=True)
+    df = df[df['firstName'].str.strip().astype(bool)]
+    df = df[df['lastName'].str.strip().astype(bool)]
+    df.insert(0, 'userId', range(1, len(df) + 1))
+    df = df.astype({"firstName": "str", "lastName": "str"})
+    df.to_sql("users", con=conn, if_exists="replace", index=False)
+    print("users loaded to table")
 
 
 # This function will load the callLogs.csv file into the callLogs table, discarding any records with incomplete data
 def load_and_clean_call_logs(file_path):
-
-    print("TODO: load_call_logs")
+    df = pd.read_csv(file_path, names=["phoneNumber","startTime","endTime","direction","userId"], sep=None, engine="python", on_bad_lines="skip")
+    df['endTime'] = pd.to_numeric(df['endTime'], errors='coerce')
+    df.dropna(axis=0, inplace=True)
+    df = df.astype({"userId": "int64", "phoneNumber": "str", "startTime": "int64", "endTime": "int64", "direction": "str"})
+    df.insert(0, 'callId', range(1, len(df) + 1))
+    df.to_sql("callLogs", con=conn, if_exists="replace", index=False)
+    print("Call logs loaded to table")
 
 
 # This function will write analytics data to testUserAnalytics.csv - average call time, and number of calls per user.
 # You must save records consisting of each userId, avgDuration, and numCalls
 # example: 1,105.0,4 - where 1 is the userId, 105.0 is the avgDuration, and 4 is the numCalls.
 def write_user_analytics(csv_file_path):
+    df = pd.read_sql_query("SELECT userId, AVG(endTime - startTime) AS avgDuration,COUNT(*) AS numCalls FROM callLogs GROUP BY userId", conn)
+    df.to_csv(csv_file_path, index=False)
 
-    print("TODO: write_user_analytics")
+    print("Written data to user analytics csv")
 
 
 # This function will write the callLogs ordered by userId, then start time.
 # Then, write the ordered callLogs to orderedCalls.csv
 def write_ordered_calls(csv_file_path):
+    df = pd.read_sql_query("SELECT * FROM callLogs ORDER BY userId, startTime", conn)
+    df.dropna(axis=0, inplace=True)
+    df.to_csv(csv_file_path, index=False)
 
-    print("TODO: write_ordered_calls")
+    print("Written ordered call logs to csv")
 
 
 
