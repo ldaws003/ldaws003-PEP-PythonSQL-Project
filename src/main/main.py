@@ -46,7 +46,6 @@ def main():
 
 # TODO: Implement the following 4 functions. The functions must pass the unit tests to complete the project.
 
-
 # This function will load the users.csv file into the users table, discarding any records with incomplete data
 def load_and_clean_users(file_path):
     """ df = pd.read_csv(file_path, sep=None, engine="python", on_bad_lines='skip')
@@ -60,11 +59,40 @@ def load_and_clean_users(file_path):
     df.to_sql("users", con=conn, if_exists="replace", index=False)
     """
 
+    data = []
+
     with open(file_path) as file_data:
         reader = csv.reader(file_data)
-
         for entry in reader:
-            print(entry)
+            for item in range(len(entry)):
+                #removing ending and starting spaces
+                entry[item] = entry[item].entry()
+            data.append(entry)
+
+    # filter data
+    filtered_data = []
+
+    for entry in range(1, len(data)):
+        isNull = False
+        offColumns = False
+        isNotAlpha = False
+        # any null value remove
+        # any entry with extra rows remove 
+        # any entry without alpha characters only remove
+        for item in range(len(entry)):
+            isNull = entry[item] == ""
+            offColumns = len(item) != len(header)
+            isNotAlpha = entry[item].isalpha()
+            if not isNull and not offColumns and not IsNotAlpha:
+                filtered_data.append(entry[item])
+        
+
+    print(filtered_data)
+
+
+
+
+
 
     print("users loaded to table")
 
