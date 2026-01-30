@@ -128,7 +128,7 @@ def load_and_clean_call_logs(file_path):
             callId += 1
 
     # adding filtered data into sql
-    cursor.executemany("INSERT INTO users (callId, phoneNumber, startTime, endTime, direction, userId) VALUES (?, ?, ?, ?, ?, ?)", filtered_data)
+    cursor.executemany("INSERT INTO callLogs (callId, phoneNumber, startTime, endTime, direction, userId) VALUES (?, ?, ?, ?, ?, ?)", filtered_data)
 
 
     print("Call logs loaded to table")
