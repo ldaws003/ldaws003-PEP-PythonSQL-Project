@@ -1,6 +1,6 @@
 import csv
 import sqlite3
-import pandas as pd
+import re
 
 # Connect to the SQLite in-memory database
 conn = sqlite3.connect(':memory:')
@@ -46,15 +46,26 @@ def main():
 
 # TODO: Implement the following 4 functions. The functions must pass the unit tests to complete the project.
 
+
 # This function will load the users.csv file into the users table, discarding any records with incomplete data
 def load_and_clean_users(file_path):
-    df = pd.read_csv(file_path, sep=None, engine="python", on_bad_lines='skip')
+    """ df = pd.read_csv(file_path, sep=None, engine="python", on_bad_lines='skip')
+
+
     df.dropna(axis=0, inplace=True)
     df = df[df['firstName'].str.strip().astype(bool)]
     df = df[df['lastName'].str.strip().astype(bool)]
     df.insert(0, 'userId', range(1, len(df) + 1))
     df = df.astype({"firstName": "str", "lastName": "str"})
     df.to_sql("users", con=conn, if_exists="replace", index=False)
+    """
+
+    with open(file_path) as file_data:
+        reader = csv.reader(file_data)
+
+        for entry in reader:
+            print(row)
+
     print("users loaded to table")
 
 
