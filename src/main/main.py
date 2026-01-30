@@ -147,9 +147,18 @@ def write_user_analytics(csv_file_path):
 # This function will write the callLogs ordered by userId, then start time.
 # Then, write the ordered callLogs to orderedCalls.csv
 def write_ordered_calls(csv_file_path):
-    df = pd.read_sql_query("SELECT * FROM callLogs ORDER BY userId, startTime", conn)
-    df.dropna(axis=0, inplace=True)
-    df.to_csv(csv_file_path, index=False)
+    #df = pd.read_sql_query("SELECT * FROM callLogs ORDER BY userId, startTime", conn)
+    #df.dropna(axis=0, inplace=True)
+    #df.to_csv(csv_file_path, index=False)
+
+    cursor.execute("SELECT * FROM callLogs ORDER BY userId, startTime")
+    rows = cursor.fetchall()
+    header = [description[0] for description in cursor.description]
+
+    with open(csv_file_path, mode="w") as file:
+        writer = csv.writer(file)
+        writer.writerow(header)
+        writer.writerows(rows)
 
     print("Written ordered call logs to csv")
 
