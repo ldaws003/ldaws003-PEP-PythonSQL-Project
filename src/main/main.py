@@ -70,6 +70,7 @@ def load_and_clean_users(file_path):
             data.append(entry)
 
     # filter data
+    header = data[0].copy()
     filtered_data = []
 
     for entry in range(1, len(data)):
@@ -86,15 +87,16 @@ def load_and_clean_users(file_path):
 
         if isNotNull and onColumns and isAlpha:
             filtered_data.append(data[entry])
-        
-    print("hello world")
 
-    print(filtered_data)
+    # adding UserId column
+    header.insert(0, "userId")
+    userId = 1
+    for entry in filtered_data:
+        entry.insert(0, userId)
+        userId+=1
 
-
-
-
-
+    # adding entry into sql
+    cursor.executemany("INSERT INTO users (userId, firstName, lastName) VALUES (?, ?, ?)", filtered_data)
 
     print("users loaded to table")
 
