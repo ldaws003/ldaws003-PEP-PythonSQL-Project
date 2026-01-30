@@ -116,12 +116,12 @@ def load_and_clean_call_logs(file_path):
     filtered_data = []
     callId = 1
     for entry in data:
-        entry.insert(0, callId)
         numCheck = re.fullmatch(r"([0-9]{3})-([0-9]{3})-([0-9]{4})", entry[0])
         startTimeCheck = entry[1].isdigit()
         endTimeCheck = entry[2].isdigit()
         directionCheck = entry[3] in ["outbound", "inbound"]
         userIdCheck = entry[4].isdigit()
+        entry.insert(0, callId) #inserting callId column
         columnsCheck = len(header) == len(entry)
         if numCheck and startTimeCheck and endTimeCheck and directionCheck and userIdCheck and columnsCheck:
             filtered_data.append(entry)
