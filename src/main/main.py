@@ -64,7 +64,7 @@ def load_and_clean_users(file_path):
         reader = csv.reader(file_data)
 
         for entry in reader:
-            print(row)
+            print(entry)
 
     print("users loaded to table")
 
