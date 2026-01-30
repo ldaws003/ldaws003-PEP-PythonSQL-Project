@@ -126,7 +126,9 @@ def load_and_clean_call_logs(file_path):
         if numCheck and startTimeCheck and endTimeCheck and directionCheck and userIdCheck and columnsCheck:
             filtered_data.append(entry)
             callId += 1
-    print(filtered_data)
+
+    for entry in filtered_data:
+        print(entry)
 
 
     print("Call logs loaded to table")
