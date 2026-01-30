@@ -84,7 +84,7 @@ def load_and_clean_users(file_path):
         entry.insert(0, userId)
         userId+=1
 
-    # adding entry into sql
+    # adding filtered data into sql
     cursor.executemany("INSERT INTO users (userId, firstName, lastName) VALUES (?, ?, ?)", filtered_data)
 
     print("users loaded to table")
@@ -127,8 +127,8 @@ def load_and_clean_call_logs(file_path):
             filtered_data.append(entry)
             callId += 1
 
-    for entry in filtered_data:
-        print(entry)
+    # adding filtered data into sql
+    cursor.executemany("INSERT INTO users (callId, phoneNumber, startTime, endTime, direction, userId) VALUES (?, ?, ?, ?, ?, ?)", filtered_data)
 
 
     print("Call logs loaded to table")
