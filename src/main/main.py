@@ -86,6 +86,7 @@ def load_and_clean_users(file_path):
             if not isNull and not offColumns and not isNotAlpha:
                 filtered_data.append(data[entry])
         
+    print("hello world")
 
     print(filtered_data)
 
