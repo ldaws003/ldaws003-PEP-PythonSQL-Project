@@ -137,7 +137,7 @@ def write_user_analytics(csv_file_path):
     with open(csv_file_path, mode="w", newline='', encoding='utf-8') as file:
         writer = csv.writer(file)
         writer.writerow(header)
-        writer.writerows(rows)
+        writer.writerows(rows) 
 
     print("Written data to user analytics csv")
 
