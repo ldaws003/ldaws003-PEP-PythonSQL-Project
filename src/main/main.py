@@ -153,7 +153,7 @@ def write_ordered_calls(csv_file_path):
     with open(csv_file_path, mode="w") as file:
         writer = csv.writer(file)
         writer.writerow(header)
-        #writer.writerows(rows)
+        writer.writerows(rows)
 
     print("Written ordered call logs to csv")
 
