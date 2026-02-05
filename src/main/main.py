@@ -37,7 +37,7 @@ def main():
     write_ordered_calls('../../resources/orderedCalls.csv')
 
     # Helper method that prints the contents of the users and callLogs tables. Uncomment to see data.
-    select_from_users_and_call_logs()
+    #select_from_users_and_call_logs()
 
     # Close the cursor and connection. main function ends here.
     cursor.close()
