@@ -134,7 +134,7 @@ def write_user_analytics(csv_file_path):
     rows = cursor.fetchall()
     header = [description[0] for description in cursor.description]
 
-    with open(csv_file_path, mode="w") as file:
+    with open(csv_file_path, mode="w", newline='', encoding='utf-8') as file:
         writer = csv.writer(file)
         writer.writerow(header)
         writer.writerows(rows)
@@ -149,7 +149,7 @@ def write_ordered_calls(csv_file_path):
     rows = cursor.fetchall()
     header = [description[0] for description in cursor.description]
 
-    with open(csv_file_path, mode="w") as file:
+    with open(csv_file_path, mode="w", newline='', encoding='utf-8') as file:
         writer = csv.writer(file)
         writer.writerow(header)
         writer.writerows(rows)
