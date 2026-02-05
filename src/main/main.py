@@ -149,6 +149,7 @@ def write_ordered_calls(csv_file_path):
     rows = cursor.fetchall()
     header = [description[0] for description in cursor.description]
     print(rows[0])
+    0p
 
     with open(csv_file_path, mode="w") as file:
         writer = csv.writer(file)
